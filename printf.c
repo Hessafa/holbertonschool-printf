@@ -1,5 +1,5 @@
 #include "main.h"
-
+int check_prtr(char c);
 /**
  * _printf - print function
  * @format: str
