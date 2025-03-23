@@ -1,88 +1,51 @@
 #include "main.h"
-#include <stdarg.h>
-
 /**
- * handle_char - Handles the %c format specifier
- * @args: Argument list containing the character
+ * _printf - mimic the standard printf function
+ * @...: list of arguments passed to the function
+ * @format: pointer to string
  *
- * Return: Number of characters printed
- */
-int handle_char(va_list args)
-{
-	char c = va_arg(args, int);
-
-	return (_putchar(c));
-}
-
-/**
- * handle_string - Handles the %s format specifier
- * @args: Argument list containing the string
- *
- * Return: Number of characters printed
- */
-int handle_string(va_list args)
-{
-	int count = 0;
-	char *str = va_arg(args, char *);
-
-	if (!str)
-		str = "(null)";
-
-	while (*str)
-		count += _putchar(*str++);
-
-	return (count);
-}
-
-/**
- * handle_percent - Handles the %% format specifier
- *
- * Return: Number of characters printed
- */
-int handle_percent(void)
-{
-	return (_putchar('%'));
-}
-
-/**
- * _printf - Produces output according to a format
- * @format: Format string containing specifiers
- *
- * Return: Number of characters printed
+ * Return: length of the string
  */
 int _printf(const char *format, ...)
 {
-	int count = 0;
 	va_list args;
-
-	if (!format)
-		return (-1); /* Return error for NULL format */
+	int count = 0, i = 0, j = 0;
+	spec_t spec_list[] = {{'c', spec_char}, {'s', spec_str}, {'%', spec_percent},
+		{'d', spec_deci}, {'i', spec_deci}, {'\0', NULL}};
 
 	va_start(args, format);
-	while (*format)
+	if (format == NULL)
+		return (-1);
+	while (format != NULL && format[i] != '\0')
 	{
-		if (*format == '%')
+		if (format[i] == '%')
 		{
-			format++;
-			if (*format == 'c')
-				count += handle_char(args);
-			else if (*format == 's')
-				count += handle_string(args);
-			else if (*format == '%')
-				count += handle_percent();
-			else
+			if (format[i + 1] == '\0')
+				return (-1);
+			while (spec_list[j].c != '\0')
 			{
-				count += _putchar('%');
-				count += _putchar(*format);
+				if (format[i + 1] == spec_list[j].c)
+				{
+					count += spec_list[j].spec(args);
+					break;
+				}
+				j++;
 			}
+			if (spec_list[j].c == '\0')
+			{
+				count += _putchar(format[i]);
+				count += _putchar(format[i + 1]);
+			}
+			j = 0;
+			i++;
 		}
 		else
 		{
-			count += _putchar(*format);
+			_putchar(format[i]);
+			count++;
 		}
-		format++;
+		i++;
 	}
 	va_end(args);
-
 	return (count);
 }
