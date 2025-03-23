@@ -1,51 +1,88 @@
 #include "main.h"
-int check_prtr(char c);
-/**
- * _printf - print function
- * @format: str
- * Return: integer
- */
+#include <stdarg.h>
 
+/**
+ * handle_char - Handles the %c format specifier
+ * @args: Argument list containing the character
+ *
+ * Return: Number of characters printed
+ */
+int handle_char(va_list args)
+{
+	char c = va_arg(args, int);
+
+	return (_putchar(c));
+}
+
+/**
+ * handle_string - Handles the %s format specifier
+ * @args: Argument list containing the string
+ *
+ * Return: Number of characters printed
+ */
+int handle_string(va_list args)
+{
+	int count = 0;
+	char *str = va_arg(args, char *);
+
+	if (!str)
+		str = "(null)";
+
+	while (*str)
+		count += _putchar(*str++);
+
+	return (count);
+}
+
+/**
+ * handle_percent - Handles the %% format specifier
+ *
+ * Return: Number of characters printed
+ */
+int handle_percent(void)
+{
+	return (_putchar('%'));
+}
+
+/**
+ * _printf - Produces output according to a format
+ * @format: Format string containing specifiers
+ *
+ * Return: Number of characters printed
+ */
 int _printf(const char *format, ...)
 {
-	char *buff;
-	int  i = 0, count = 0;
-	va_list arg_value;
-	int (*func)(char *, int, va_list);
+	int count = 0;
+	va_list args;
 
-	buff = malloc(4000);
-	if ((!format || !buff) || (format[0] == '%' && format[1] == '\0'))
+	if (!format)
+		return (-1); /* Return error for NULL format */
+
+	va_start(args, format);
+	while (*format)
 	{
-		free(buff);
-		exit(1);
-	}
-
-	va_start(arg_value, format);
-
-	while (format[i])
-	{
-		if (format[i] != '%')
+		if (*format == '%')
 		{
-			buff[count] = format[i];
-			count++;
+			format++;
+			if (*format == 'c')
+				count += handle_char(args);
+			else if (*format == 's')
+				count += handle_string(args);
+			else if (*format == '%')
+				count += handle_percent();
+			else
+			{
+				count += _putchar('%');
+				count += _putchar(*format);
+			}
 		}
 		else
 		{
-			func = check_prtr(format[i + 1]);
-			if (!func)
-			{
-				buff[count] = '%';
-				i++;
-				count++;
-				continue;
-			}
-			count = func(&buff[count], count, arg_value);
-			i++;
+			count += _putchar(*format);
 		}
-		i++;
+		format++;
 	}
-	write(1, buff, count);
-	va_end(arg_value);
-	free(buff);
+	va_end(args);
+
 	return (count);
 }
