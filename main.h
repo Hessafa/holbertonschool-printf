@@ -1,9 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
-/* ======= LIBRARIES ======= */
-#include <stdarg.h>  /*  For va_list, va_start, va_arg, va_end */
-#include <unistd.h>   /* For write function */
 
+#include <stdarg.h>
+
+int _putchar(char c);
 int _printf(const char *format, ...);
+int handle_char(va_list args);
+int handle_string(va_list args);
+int handle_percent(void);
 
 #endif /* MAIN_H */
