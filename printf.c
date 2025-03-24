@@ -1,4 +1,6 @@
 #include "main.h"
+#include <stdarg.h>
+#include <unistd.h>
 /**
 * print_char - Prints a single character.
 * @args: The argument list containing the character.
