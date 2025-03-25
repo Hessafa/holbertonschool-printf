@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdarg.h>
 #include "main.h"
+#include <stdarg.h>
+#include <unistd.h>
 
 /**
  * _printf - Custom printf implementation
@@ -10,33 +10,33 @@
  */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int count = 0;
-    const char *ptr;
+	va_list args;
+	int count = 0;
+	const char *ptr;
 
-    /* Initialize the va_list */
-    va_start(args, format);
+	if (!format)
+		return (-1);
 
-    /* Loop through the format string */
-    for (ptr = format; *ptr != '\0'; ptr++)
-    {
-        if (*ptr == '%' && (*(ptr + 1) == 'd' || *(ptr + 1) == 'i'))
-        {
-            /* Handle %d and %i specifiers (print integers) */
-            int num = va_arg(args, int);
-            count += printf("%d", num); /* Use printf to print integers */
-            ptr++; /* Skip the specifier (d or i) */
-        }
-        else
-        {
-            /* Print other characters as they are */
-            putchar(*ptr);
-            count++;
-        }
-    }
+	/* Initialize the va_list */
+	va_start(args, format);
 
-    /* Clean up the va_list */
-    va_end(args);
+	/* Loop through the format string */
+	for (ptr = format; *ptr != '\0'; ptr++)
+	{
+		if (*ptr == '%')
+		{
+			ptr++; /* Move past the '%' character */
+			count += handle_format_specifier(ptr, args);
+		}
+		else
+		{
+			/* Print normal characters */
+			count += write(1, ptr, 1);
+		}
+	}
 
-    return (count);
+	/* Clean up the va_list */
+	va_end(args);
+
+	return (count);
 }
