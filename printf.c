@@ -1,13 +1,12 @@
 #include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
-#include <limits.h>
 
 /**
  * print_char - Prints a single character.
  * @args: The argument list containing the character.
  *
- * Return: The number of characters printed.
+ * Return: Number of characters printed.
  */
 int print_char(va_list args)
 {
@@ -20,7 +19,7 @@ int print_char(va_list args)
  * print_string - Prints a string.
  * @args: The argument list containing the string.
  *
- * Return: The number of characters printed.
+ * Return: Number of characters printed.
  */
 int print_string(va_list args)
 {
@@ -39,7 +38,7 @@ int print_string(va_list args)
 /**
  * print_percent - Prints a literal percent sign.
  *
- * Return: The number of characters printed.
+ * Return: Number of characters printed.
  */
 int print_percent(void)
 {
@@ -47,60 +46,16 @@ int print_percent(void)
 }
 
 /**
- * print_int - Prints an integer.
- * @args: The argument list containing the integer.
+ * _printf - Produces output according to a format.
+ * @format: A character string containing directives.
  *
- * Return: The number of characters printed.
- */
-int print_int(va_list args)
-{
-	int num = va_arg(args, int);
-	int count = 0;
-	char buffer[20];
-	int i = 0;
-
-	/* Special case for INT_MIN to prevent overflow */
-	if (num == INT_MIN)
-	{
-		count += write(1, "-2147483648", 11);
-		return (count);
-	}
-
-	if (num == 0)
-		return (write(1, "0", 1));
-
-	if (num < 0)
-	{
-		count += write(1, "-", 1);
-		num = -num;
-	}
-
-	/* Store digits in reverse order */
-	while (num > 0)
-	{
-		buffer[i++] = "0123456789"[num % 10];
-		num /= 10;
-	}
-
-	/* Print digits in correct order */
-	while (--i >= 0)
-		count += write(1, &buffer[i], 1);
-
-	return (count);
-}
-
-/**
- * _printf - Custom printf implementation.
- * @format: The format string.
- *
- * Return: The number of characters printed (excluding null byte),
+ * Return: Number of characters printed (excluding null byte),
  *         or -1 if an error occurs.
  */
 int _printf(const char *format, ...)
 {
 	va_list args;
 	int count = 0;
-	const char *ptr;
 
 	if (!format)
 		return (-1);
@@ -112,7 +67,6 @@ int _printf(const char *format, ...)
 		if (*format == '%')
 		{
 			format++;
-
 			if (!*format)
 				return (-1);
 
@@ -122,8 +76,6 @@ int _printf(const char *format, ...)
 				count += print_string(args);
 			else if (*format == '%')
 				count += print_percent();
-			else if (*format == 'd' || *format == 'i')
-				count += print_int(args);
 			else
 			{
 				count += write(1, "%", 1);
@@ -134,9 +86,52 @@ int _printf(const char *format, ...)
 		{
 			count += write(1, format, 1);
 		}
-
 		format++;
 	}
-va_end(args);
-return (count);
+
+	va_end(args);
+	return (count);
+}
+
+/**
+ * _printf - Custom printf implementation
+ * @format: The format string
+ *
+ * Return: The number of characters printed (excluding null byte)
+ */
+int _printf(const char *format, ...)
+{
+	va_list args;
+	int count = 0;
+	const char *ptr;
+
+	/* Initialize the va_list */
+	va_start(args, format);
+
+	/* Loop through the format string */
+	for (ptr = format; *ptr != '\0'; ptr++)
+	{
+		if (*ptr == '%' && (*(ptr + 1) == 'd' || *(ptr + 1) == 'i'))
+		{
+			/* Handle %d and %i specifiers (print integers) */
+			int num = va_arg(args, int);
+
+			count += printf("%d", num);
+		       /* Use printf to print integers */
+
+			ptr++;
+		       /* Skip the specifier (d or i) */
+		}
+		else
+		{
+			/* Print other characters as they are */
+			putchar(*ptr);
+			count++;
+		}
+	}
+
+	/* Clean up the va_list */
+	va_end(args);
+
+	return (count);
 }
