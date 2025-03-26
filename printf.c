@@ -1,12 +1,13 @@
 #include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
+#include <limits.h>
 
 /**
  * print_char - Prints a single character.
  * @args: The argument list containing the character.
  *
- * Return: Number of characters printed.
+ * Return: The number of characters printed.
  */
 int print_char(va_list args)
 {
@@ -19,7 +20,7 @@ int print_char(va_list args)
  * print_string - Prints a string.
  * @args: The argument list containing the string.
  *
- * Return: Number of characters printed.
+ * Return: The number of characters printed.
  */
 int print_string(va_list args)
 {
@@ -38,7 +39,7 @@ int print_string(va_list args)
 /**
  * print_percent - Prints a literal percent sign.
  *
- * Return: Number of characters printed.
+ * Return: The number of characters printed.
  */
 int print_percent(void)
 {
@@ -49,22 +50,29 @@ int print_percent(void)
  * print_int - Prints an integer.
  * @args: The argument list containing the integer.
  *
- * Return: Number of characters printed.
+ * Return: The number of characters printed.
  */
 int print_int(va_list args)
 {
 	int num = va_arg(args, int);
 	int count = 0;
-	char buffer[20];  /* Buffer to hold digits of the integer */
+	char buffer[20];
 	int i = 0;
+
+	/* Special case for INT_MIN to prevent overflow */
+	if (num == INT_MIN)
+	{
+		count += write(1, "-2147483648", 11);
+		return (count);
+	}
 
 	if (num == 0)
 		return (write(1, "0", 1));
 
 	if (num < 0)
 	{
-		count += write(1, "-", 1);  /* Print the negative sign */
-		num = -num;  /* Make num positive for easier handling */
+		count += write(1, "-", 1);
+		num = -num;
 	}
 
 	/* Store digits in reverse order */
@@ -82,10 +90,10 @@ int print_int(va_list args)
 }
 
 /**
- * _printf - Produces output according to a format.
- * @format: A character string containing directives.
+ * _printf - Custom printf implementation.
+ * @format: The format string.
  *
- * Return: Number of characters printed (excluding null byte),
+ * Return: The number of characters printed (excluding null byte),
  *         or -1 if an error occurs.
  */
 int _printf(const char *format, ...)
@@ -99,34 +107,36 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 
-	for (ptr = format; *ptr != '\0'; ptr++)
+	while (*format)
 	{
-		if (*ptr == '%')
+		if (*format == '%')
 		{
-			ptr++;
-			if (!*ptr)
+			format++;
+
+			if (!*format)
 				return (-1);
-			if (*ptr == 'c')
+
+			if (*format == 'c')
 				count += print_char(args);
-			else if (*ptr == 's')
+			else if (*format == 's')
 				count += print_string(args);
-			else if (*ptr == '%')
+			else if (*format == '%')
 				count += print_percent();
-			else if (*ptr == 'd' || *ptr == 'i')
+			else if (*format == 'd' || *format == 'i')
 				count += print_int(args);
 			else
 			{
 				count += write(1, "%", 1);
-				count += write(1, ptr, 1);
+				count += write(1, format, 1);
 			}
 		}
 		else
 		{
-			count += write(1, ptr, 1);
+			count += write(1, format, 1);
 		}
+
+		format++;
 	}
-
-	va_end(args);
-
-	return (count);
+va_end(args);
+return (count);
 }
