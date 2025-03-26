@@ -55,20 +55,28 @@ int print_int(va_list args)
 {
 	int num = va_arg(args, int);
 	int count = 0;
+	char buffer[20];  /* Buffer to hold digits of the integer */
+	int i = 0;
 
 	if (num == 0)
 		return (write(1, "0", 1));
 
 	if (num < 0)
 	{
-		count += write(1, "-", 1);
-		num = -num;
+		count += write(1, "-", 1);  /* Print the negative sign */
+		num = -num;  /* Make num positive for easier handling */
 	}
 
-	if (num / 10)
-		count += print_int((va_list)&num / 10);
+	/* Store digits in reverse order */
+	while (num > 0)
+	{
+		buffer[i++] = "0123456789"[num % 10];
+		num /= 10;
+	}
 
-	count += write(1, &"0123456789"[num % 10], 1);
+	/* Print digits in correct order */
+	while (--i >= 0)
+		count += write(1, &buffer[i], 1);
 
 	return (count);
 }
