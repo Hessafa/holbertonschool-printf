@@ -16,7 +16,7 @@ int print_number(long n)
 		count += print_number(n / 10);
 
 	digit = '0' + (n % 10);
-	count += write(1, &digit, 1)
+	count += write(1, &digit, 1);
 
 	return count;
 }
