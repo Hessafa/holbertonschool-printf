@@ -13,9 +13,9 @@ int print_number(long n)
 	char digit;
 
 	if (n/10)
-		count += print_number(n / 10)
+		count += print_number(n / 10);
 
-	digit = '0' + (n % 10)
+	digit = '0' + (n % 10);
 	count += write(1, &digit, 1)
 
 	return count;
@@ -42,7 +42,7 @@ int print_int(va_list args)
 
         if (n < 0)
         {
-                count += write(1, "-", 1;
+                count += write(1, "-", 1);
                 n = -n;
         }
 
