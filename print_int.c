@@ -15,7 +15,11 @@ int print_number(long n)
 	if (n/10)
 		count += print_number(n / 10);
 
-	digit = '0' + (n % 10);
+	int remainder = n % n;
+
+	if (reminder < 0)
+		remainder = -remainder
+	digit = '0' + remainder;
 	count += write(1, &digit, 1);
 
 	return count;
