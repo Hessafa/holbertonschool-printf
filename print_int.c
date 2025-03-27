@@ -18,7 +18,7 @@ int print_number(long n)
 
 	remainder = n % 10;
 
-	if (reminder < 0)
+	if (remainder < 0)
 		remainder = -remainder;
 	digit = '0' + remainder;
 	count += write(1, &digit, 1);
