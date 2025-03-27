@@ -13,10 +13,10 @@ int print_int(va_list args)
         int count = 0;
         char buffer[12];
         int i = 0;
-        int is_negative = 0;
+        
 
         if (n == 0)
-                return write(1, "0", 1)
+                return write(1, "0", 1);
 
         if (n < 0)
         {
