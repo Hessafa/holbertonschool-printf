@@ -11,11 +11,12 @@ int print_number(long n)
 {
 	int count = 0;
 	char digit;
+	int remainder
 
 	if (n/10)
 		count += print_number(n / 10);
 
-	int remainder = n % n;
+	remainder = n % n;
 
 	if (reminder < 0)
 		remainder = -remainder
