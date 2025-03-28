@@ -74,7 +74,7 @@ count += print_string(args);
 else if (*format == '%')
 count += print_percent();
 else if (*format == 'd' || *format == 'i')
-        count += print_int(args);
+count += print_int(args);
 else
 {
 count += write(1, "%", 1);
