@@ -1,36 +1,49 @@
-NAME
-    _printf - A custom version of printf that prints formatted output to the standard output
+.TH _PRINTF 3 "March 2025" "Version 1.0" "Manual Page"
+.SH NAME
+_printf - A custom version of printf that prints formatted output to the standard output
 
-SYNOPSIS
-    int _printf(const char *format, ...);
+.SH SYNOPSIS
+.B int _printf(const char *format, ...);
 
-DESCRIPTION
-    The _printf function works like the standard printf function.
-    It takes a format string and a variable number of arguments,
-    and prints the output according to the format.
+.SH DESCRIPTION
+The
+.B _printf
+function works like the standard printf function.
+It takes a format string and a variable number of arguments,
+and prints the output according to the format.
 
-    It supports the following format specifiers:
-      %c  - prints a single character
-      %s  - prints a string
-      %%  - prints the percent sign (%)
-      %d, %i - prints a signed integer (decimal)
+It supports the following format specifiers:
+.TP
+.B %c
+Prints a single character.
+.TP
+.B %s
+Prints a string.
+.TP
+.B %%
+Prints the percent sign (%).
+.TP
+.B %d, %i
+Prints a signed integer (decimal).
 
-    If an unknown format specifier is used, _printf will print the '%' character
-    followed by the unknown specifier.
+If an unknown format specifier is used,
+.B _printf
+will print the '%' character followed by the unknown specifier.
 
-RETURN VALUE
-    The function returns the total number of characters printed.
-    If the format string is NULL or an error happens, it returns -1.
+.SH RETURN VALUE
+The function returns the total number of characters printed.
+If the format string is NULL or an error happens, it returns -1.
 
-EXAMPLES
-    _printf("Hello, %s!\n", "World");
-    _printf("Number: %d\n", 100);
-    _printf("Percent: %%\n");
-    _printf("Character: %c\n", 'H');
+.SH EXAMPLES
+.EX
+_printf("Hello, %s!\n", "World");
+_printf("Number: %d\n", 100);
+_printf("Percent: %%\n");
+_printf("Character: %c\n", 'H');
+.EE
 
-AUTHOR
-    Hessah Alotyash, Abdulaziz Jumaiah
+.SH AUTHOR
+Hessah Alotaysh, Abdulaziz Jumaiah
 
-SEE ALSO
-    printf(3)
-
+.SH SEE ALSO
+.BR printf (3)
