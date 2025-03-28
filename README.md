@@ -41,7 +41,7 @@ Create a man page for the `_printf` function, providing a description of how to 
  
 ##  <img src="https://img.icons8.com/ios/452/github.png" width="30"/> Authors: 
 
-[![GitHub](https://img.shields.io/badge/GitHub-Hessah_Alotyash-lightblue)](https://github.com/hessafa)
+[![GitHub](https://img.shields.io/badge/GitHub-Hessah_Alotaysh-lightblue)](https://github.com/hessafa)
 
 [![GitHub](https://img.shields.io/badge/GitHub-Abdulaziz_Jumaiah-lightblue)](https://github.com/Aziz94tg)
 
