@@ -1,0 +1,36 @@
+NAME
+    _printf - A custom version of printf that prints formatted output to the standard output
+
+SYNOPSIS
+    int _printf(const char *format, ...);
+
+DESCRIPTION
+    The _printf function works like the standard printf function.
+    It takes a format string and a variable number of arguments,
+    and prints the output according to the format.
+
+    It supports the following format specifiers:
+      %c  - prints a single character
+      %s  - prints a string
+      %%  - prints the percent sign (%)
+      %d, %i - prints a signed integer (decimal)
+
+    If an unknown format specifier is used, _printf will print the '%' character
+    followed by the unknown specifier.
+
+RETURN VALUE
+    The function returns the total number of characters printed.
+    If the format string is NULL or an error happens, it returns -1.
+
+EXAMPLES
+    _printf("Hello, %s!\n", "World");
+    _printf("Number: %d\n", 100);
+    _printf("Percent: %%\n");
+    _printf("Character: %c\n", 'H');
+
+AUTHOR
+    Hessah Alotyash, Abdulaziz Jumaiah
+
+SEE ALSO
+    printf(3)
+
